@@ -1,47 +1,118 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="WorkReady helps contractor networks onboard contractors, verify requirements, collect W-9s and insurance, and get them ready for work.">
   <title>WorkReady | Get Cleared. Get Covered. Get to Work.</title>
-  <link rel="icon" href="./favicon.ico" />
-  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
-  <link rel="stylesheet" href="./styles.css" />
+  <link rel="icon" type="image/png" sizes="512x512" href="./favicon.png">
+  <link rel="shortcut icon" href="./favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+  <meta name="theme-color" content="#09305b">
+  <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <header class="topbar">
-    <div class="container topbar-inner">
-      <a class="brand" href="#top" aria-label="WorkReady home"><img src="./workready-logo.png" alt="WorkReady" /></a>
-      <nav class="nav-links" aria-label="Main navigation"><a href="#how">How it works</a><a href="#platform">Platform</a><a href="#pricing">Pricing</a><a href="#security">Security</a></nav>
-      <div class="nav-actions"><button class="btn btn-ghost" id="openLogin">Sign in</button><button class="btn btn-primary" id="openRequest">Request access</button></div>
+  <div id="toast"></div>
+
+  <header id="publicNav" class="nav">
+    <div class="container nav-inner">
+      <a class="brand-shell" href="#" aria-label="WorkReady home"><img src="./workready-logo.png" alt="WorkReady"></a>
+      <nav class="nav-links">
+        <a href="#partners">For Partners</a><a href="#contractors">For Contractors</a><a href="#how">How It Works</a>
+      </nav>
+      <div class="nav-actions"><button class="btn ghost" data-action="open-login">Login</button><button class="btn primary" data-action="open-login">Get Started</button></div>
     </div>
   </header>
 
-  <main id="top">
+  <main id="marketing">
     <section class="hero">
       <div class="container hero-grid">
-        <div><div class="eyebrow">Contractor compliance, made operational</div><h1>Get cleared. Get covered. <span>Get to work.</span></h1><p class="hero-copy">WorkReady gives organizations one place to invite contractors, collect required documents, track compliance, and know who is ready to work right now.</p><div class="hero-actions"><button class="btn btn-primary btn-lg" id="heroRequest">Request access</button><button class="btn btn-secondary btn-lg" id="heroLogin">Sign in</button></div><div class="trust-row"><span>✓ Invitation-only access</span><span>✓ Secure document workflows</span><span>✓ Real-time clearance status</span></div></div>
-        <div class="hero-card"><div class="mini-head"><div><span class="dot green"></span><strong>Contractor readiness</strong></div><span class="mini-badge">LIVE</span></div><div class="score-row"><div><div class="score">86%</div><div class="muted">cleared to work</div></div><div class="ring">86</div></div><div class="status-list"><div><span class="status-dot green"></span><div><strong>18 contractors cleared</strong><small>All required items current</small></div><b>Green</b></div><div><span class="status-dot yellow"></span><div><strong>3 need attention</strong><small>Documents expiring soon</small></div><b>Yellow</b></div><div><span class="status-dot red"></span><div><strong>1 not cleared</strong><small>Required item missing</small></div><b>Red</b></div></div></div>
+        <div>
+          <span class="eyebrow">THE CONTRACTOR READINESS PLATFORM</span>
+          <h1>Get contractors<br>ready to work <span>faster.</span></h1>
+          <p>WorkReady gives contractor networks one place to set requirements, invite contractors, collect W-9s and insurance documents, and resolve coverage gaps before work is assigned.</p>
+          <div class="hero-actions">
+            <button class="btn secondary large" data-action="open-login">I'm a Partner <small>Manage contractors</small></button>
+            <button class="btn light large" data-action="open-login">I'm a Contractor <small>Get work ready</small></button>
+          </div>
+          <div class="trust"><span>✓ Secure document workflow</span><span>✓ Partner-specific requirements</span><span>✓ Coverage assistance built in</span></div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-logo"><img src="./workready-logo.png" alt=""></div>
+          <div class="status-card">
+            <div class="status-title">WORKREADY CHECKLIST</div>
+            <div class="status-row"><span>Insurance verified</span><b>✓</b></div>
+            <div class="status-row"><span>W-9 completed</span><b>✓</b></div>
+            <div class="status-row"><span>Partner requirements met</span><b>✓</b></div>
+            <div class="ready-banner">✓ WORKREADY</div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="section" id="how"><div class="container"><div class="section-head"><span class="eyebrow">How WorkReady works</span><h2>From invitation to clearance in one workflow.</h2><p>Designed for organizations that depend on independent contractors and need a repeatable, defensible way to manage readiness.</p></div><div class="steps"><article><span>01</span><h3>Invite</h3><p>Invite contractors into your branded onboarding experience.</p></article><article><span>02</span><h3>Collect</h3><p>Request W-9s, agreements, insurance, licenses, and organization-specific requirements.</p></article><article><span>03</span><h3>Verify</h3><p>Review evidence and see what is complete, expiring, or missing.</p></article><article><span>04</span><h3>Clear</h3><p>Know at a glance who can work today and what needs attention.</p></article></div></div></section>
+    <section id="how" class="feature-band">
+      <div class="container feature-grid">
+        <article><div>🛡️</div><h3>Contractor Management</h3><p>Invite, organize and track every contractor in one portal.</p></article>
+        <article><div>📄</div><h3>Requirements & Compliance</h3><p>Build reusable requirement sets for each partner program.</p></article>
+        <article><div>☂️</div><h3>Insurance & Coverage</h3><p>Verify existing coverage or route gaps to coverage support.</p></article>
+        <article><div>💳</div><h3>Payroll & Workforce</h3><p>Layer payroll and workforce services into the contractor journey.</p></article>
+      </div>
+    </section>
 
-    <section class="section soft" id="platform"><div class="container split"><div><span class="eyebrow">Built for the whole contractor network</span><h2>One platform. Multiple levels of visibility.</h2><p>Corporate teams can see the entire network while local operators manage the contractors assigned to them. WorkReady keeps the hierarchy clear without creating separate systems.</p><ul class="check-list"><li>Corporate and multi-location rollups</li><li>Location-level contractor management</li><li>Configurable requirements and feature controls</li><li>W-9 and agreement workflows</li><li>Insurance and document expiration tracking</li><li>Audited support and administrative actions</li></ul></div><div class="stack-card"><div class="stack-row"><span class="icon-box">HQ</span><div><strong>Corporate</strong><small>Network-wide oversight</small></div><b>22 contractors</b></div><div class="stack-line"></div><div class="stack-row indent"><span class="icon-box">01</span><div><strong>Columbia Central</strong><small>8 contractors</small></div><span class="pill green-pill">7 cleared</span></div><div class="stack-row indent"><span class="icon-box">02</span><div><strong>Lexington</strong><small>7 contractors</small></div><span class="pill yellow-pill">2 attention</span></div><div class="stack-row indent"><span class="icon-box">03</span><div><strong>Northeast Columbia</strong><small>7 contractors</small></div><span class="pill red-pill">1 blocked</span></div></div></div></section>
+    <section id="partners" class="marketing-section">
+      <div class="container split">
+        <div><span class="eyebrow blue">FOR PARTNERS</span><h2>Stop chasing contractor paperwork.</h2><p>Create the rules once. Invite contractors against the right requirements. Know who is ready, who needs action, and who needs help getting coverage.</p><button class="btn secondary" data-action="open-login">Partner Login</button></div>
+        <div class="metric-card"><div><span>Contractors</span><b>312</b></div><div class="metric-grid"><span><b>245</b> WorkReady</span><span><b>29</b> Action Required</span><span><b>18</b> Awaiting Docs</span><span><b>9</b> Expiring Soon</span></div></div>
+      </div>
+    </section>
 
-    <section class="section" id="pricing"><div class="container"><div class="section-head"><span class="eyebrow">Pilot access</span><h2>Start with your real contractor workflow.</h2><p>WorkReady is currently onboarding organizations by invitation so each implementation is configured around the way the organization actually works.</p></div><div class="pilot-card"><div><h3>WorkReady Pilot</h3><p>Bring one team, location, or contractor group into WorkReady and validate the workflow before a broader rollout.</p></div><button class="btn btn-primary" id="pilotRequest">Request pilot access</button></div></div></section>
-
-    <section class="section dark" id="security"><div class="container split"><div><span class="eyebrow light-eye">Operational control</span><h2>Compliance information belongs in a controlled workflow—not an inbox.</h2><p>WorkReady separates organizations, users, locations, contractors, and supporting evidence so teams can work from the right level of access.</p></div><div class="security-grid"><div><strong>Role-aware access</strong><small>Platform, partner, organization, and contractor experiences.</small></div><div><strong>Audit-minded workflows</strong><small>Administrative and support actions designed for traceability.</small></div><div><strong>Secure evidence handling</strong><small>Documents support requirements instead of defining compliance on their own.</small></div><div><strong>Invitation-first onboarding</strong><small>Control who enters the platform and which organization they belong to.</small></div></div></div></section>
+    <section id="contractors" class="marketing-section white">
+      <div class="container split reverse">
+        <div class="wallet-card"><div class="wallet-head">WORKREADY WALLET</div><div class="wallet-line"><span>General Liability</span><b class="ok">Verified</b></div><div class="wallet-line"><span>Workers' Comp</span><b class="warn">Review</b></div><div class="wallet-line"><span>COI</span><b class="bad">Missing</b></div><div class="wallet-line"><span>W-9</span><b class="ok">On File</b></div></div>
+        <div><span class="eyebrow green">FOR CONTRACTORS</span><h2>Handle the business side so you can get to work.</h2><p>See exactly what your partner requires, complete your W-9, upload existing insurance, or ask WorkReady to help get you covered.</p><button class="btn primary" data-action="open-login">Contractor Login</button></div>
+      </div>
+    </section>
   </main>
 
-  <footer><div class="container footer-inner"><img src="./workready-logo.png" alt="WorkReady" /><div>© 2026 WorkReady. All rights reserved.</div></div></footer>
+  <section id="authView" class="app-shell hidden">
+    <div class="app-nav"><div class="container app-nav-inner"><div class="brand-shell"><img src="./workready-logo.png" alt="WorkReady"></div><button class="btn ghost" data-action="home">← Main Site</button></div></div>
+    <div class="container auth-wrap">
+      <div class="auth-card">
+        <h2 id="authTitle">Welcome to WorkReady</h2>
+        <p id="authSubtitle">Sign in to access your dashboard.</p>
+        <div id="normalAuth">
+          <label>Email</label><input id="authEmail" type="email" autocomplete="email" placeholder="you@company.com">
+          <label>Password</label><input id="authPassword" type="password" autocomplete="current-password" placeholder="Password">
+          <label id="nameLabel" class="signup-only hidden">Full name</label><input id="authName" class="signup-only hidden" placeholder="Full name">
+          <div class="auth-actions"><button id="signInBtn" class="btn primary">Sign In</button><button id="signUpBtn" class="btn secondary">Create Account</button></div>
+          <button id="forgotBtn" class="link-btn">Forgot password?</button>
+        </div>
+        <div id="recoveryAuth" class="hidden">
+          <label>New password</label><input id="newPassword" type="password" autocomplete="new-password">
+          <label>Confirm new password</label><input id="confirmPassword" type="password" autocomplete="new-password">
+          <button id="savePasswordBtn" class="btn primary">Save New Password</button>
+        </div>
+        <div id="authMessage"></div>
+      </div>
+    </div>
+  </section>
 
-  <div class="modal-backdrop hidden" id="requestModal"><div class="modal"><button class="modal-x" data-close="requestModal">×</button><span class="eyebrow">Invitation request</span><h2>Request WorkReady access</h2><p>Tell us where to send your invitation.</p><form id="requestForm"><label>Name<input name="name" required /></label><label>Work email<input name="email" type="email" required /></label><label>Organization<input name="organization" required /></label><label>Phone<input name="phone" type="tel" /></label><button class="btn btn-primary btn-block" type="submit">Request invitation</button><div class="form-note" id="requestNote"></div></form></div></div>
+  <section id="appView" class="app-shell portal-shell hidden">
+    <div class="app-nav">
+      <div class="container app-nav-inner"><div class="brand-shell"><img src="./workready-logo.png" alt="WorkReady"></div><div class="app-nav-actions"><button id="supportBtn" class="btn ghost">Support</button><button id="signOutBtn" class="btn ghost">Sign Out</button></div></div>
+    </div>
+    <div class="container app-layout">
+      <aside id="sidebar"></aside>
+      <div id="workspace"></div>
+    </div>
+  </section>
 
-  <div class="modal-backdrop hidden" id="loginModal"><div class="modal"><button class="modal-x" data-close="loginModal">×</button><span class="eyebrow">Secure access</span><h2>Sign in to WorkReady</h2><form id="loginForm"><label>Email<input name="email" type="email" required /></label><label>Password<input name="password" type="password" required /></label><button class="btn btn-primary btn-block" type="submit">Sign in</button><div class="form-note" id="loginNote"></div></form></div></div>
+  <div id="supportDrawer" class="drawer hidden">
+    <div class="drawer-head"><div><b>WorkReady Support</b><small>We're here to help.</small></div><button id="closeSupport" class="icon-btn">×</button></div>
+    <div id="supportThread" class="chat-body"></div>
+    <div class="chat-compose"><textarea id="supportMessage" placeholder="Type your message…"></textarea><button id="sendSupport" class="btn primary">Send</button></div>
+  </div>
 
-  <section class="portal hidden" id="portal"><aside class="portal-sidebar" id="portalSidebar"></aside><div class="portal-main"><div class="portal-top"><div><button class="mobile-menu" id="mobileMenu">☰</button><span class="portal-kicker" id="portalKicker">WORKREADY</span><h2 id="portalTitle">Dashboard</h2></div><div class="portal-user" id="portalUser"></div></div><div class="portal-workspace" id="portalWorkspace"></div></div></section>
-
-  <script src="./app.js"></script>
+  <script type="module" src="./app.js"></script>
 </body>
 </html>

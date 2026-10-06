@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>WorkReady | Get Cleared. Get Covered. Get to Work.</title>
+  <link rel="icon" href="./favicon.ico" />
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#top" aria-label="WorkReady home"><img src="./workready-logo.png" alt="WorkReady" /></a>
+      <nav class="nav-links" aria-label="Main navigation"><a href="#how">How it works</a><a href="#platform">Platform</a><a href="#pricing">Pricing</a><a href="#security">Security</a></nav>
+      <div class="nav-actions"><button class="btn btn-ghost" id="openLogin">Sign in</button><button class="btn btn-primary" id="openRequest">Request access</button></div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div><div class="eyebrow">Contractor compliance, made operational</div><h1>Get cleared. Get covered. <span>Get to work.</span></h1><p class="hero-copy">WorkReady gives organizations one place to invite contractors, collect required documents, track compliance, and know who is ready to work right now.</p><div class="hero-actions"><button class="btn btn-primary btn-lg" id="heroRequest">Request access</button><button class="btn btn-secondary btn-lg" id="heroLogin">Sign in</button></div><div class="trust-row"><span>✓ Invitation-only access</span><span>✓ Secure document workflows</span><span>✓ Real-time clearance status</span></div></div>
+        <div class="hero-card"><div class="mini-head"><div><span class="dot green"></span><strong>Contractor readiness</strong></div><span class="mini-badge">LIVE</span></div><div class="score-row"><div><div class="score">86%</div><div class="muted">cleared to work</div></div><div class="ring">86</div></div><div class="status-list"><div><span class="status-dot green"></span><div><strong>18 contractors cleared</strong><small>All required items current</small></div><b>Green</b></div><div><span class="status-dot yellow"></span><div><strong>3 need attention</strong><small>Documents expiring soon</small></div><b>Yellow</b></div><div><span class="status-dot red"></span><div><strong>1 not cleared</strong><small>Required item missing</small></div><b>Red</b></div></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="how"><div class="container"><div class="section-head"><span class="eyebrow">How WorkReady works</span><h2>From invitation to clearance in one workflow.</h2><p>Designed for organizations that depend on independent contractors and need a repeatable, defensible way to manage readiness.</p></div><div class="steps"><article><span>01</span><h3>Invite</h3><p>Invite contractors into your branded onboarding experience.</p></article><article><span>02</span><h3>Collect</h3><p>Request W-9s, agreements, insurance, licenses, and organization-specific requirements.</p></article><article><span>03</span><h3>Verify</h3><p>Review evidence and see what is complete, expiring, or missing.</p></article><article><span>04</span><h3>Clear</h3><p>Know at a glance who can work today and what needs attention.</p></article></div></div></section>
+
+    <section class="section soft" id="platform"><div class="container split"><div><span class="eyebrow">Built for the whole contractor network</span><h2>One platform. Multiple levels of visibility.</h2><p>Corporate teams can see the entire network while local operators manage the contractors assigned to them. WorkReady keeps the hierarchy clear without creating separate systems.</p><ul class="check-list"><li>Corporate and multi-location rollups</li><li>Location-level contractor management</li><li>Configurable requirements and feature controls</li><li>W-9 and agreement workflows</li><li>Insurance and document expiration tracking</li><li>Audited support and administrative actions</li></ul></div><div class="stack-card"><div class="stack-row"><span class="icon-box">HQ</span><div><strong>Corporate</strong><small>Network-wide oversight</small></div><b>22 contractors</b></div><div class="stack-line"></div><div class="stack-row indent"><span class="icon-box">01</span><div><strong>Columbia Central</strong><small>8 contractors</small></div><span class="pill green-pill">7 cleared</span></div><div class="stack-row indent"><span class="icon-box">02</span><div><strong>Lexington</strong><small>7 contractors</small></div><span class="pill yellow-pill">2 attention</span></div><div class="stack-row indent"><span class="icon-box">03</span><div><strong>Northeast Columbia</strong><small>7 contractors</small></div><span class="pill red-pill">1 blocked</span></div></div></div></section>
+
+    <section class="section" id="pricing"><div class="container"><div class="section-head"><span class="eyebrow">Pilot access</span><h2>Start with your real contractor workflow.</h2><p>WorkReady is currently onboarding organizations by invitation so each implementation is configured around the way the organization actually works.</p></div><div class="pilot-card"><div><h3>WorkReady Pilot</h3><p>Bring one team, location, or contractor group into WorkReady and validate the workflow before a broader rollout.</p></div><button class="btn btn-primary" id="pilotRequest">Request pilot access</button></div></div></section>
+
+    <section class="section dark" id="security"><div class="container split"><div><span class="eyebrow light-eye">Operational control</span><h2>Compliance information belongs in a controlled workflow—not an inbox.</h2><p>WorkReady separates organizations, users, locations, contractors, and supporting evidence so teams can work from the right level of access.</p></div><div class="security-grid"><div><strong>Role-aware access</strong><small>Platform, partner, organization, and contractor experiences.</small></div><div><strong>Audit-minded workflows</strong><small>Administrative and support actions designed for traceability.</small></div><div><strong>Secure evidence handling</strong><small>Documents support requirements instead of defining compliance on their own.</small></div><div><strong>Invitation-first onboarding</strong><small>Control who enters the platform and which organization they belong to.</small></div></div></div></section>
+  </main>
+
+  <footer><div class="container footer-inner"><img src="./workready-logo.png" alt="WorkReady" /><div>© 2026 WorkReady. All rights reserved.</div></div></footer>
+
+  <div class="modal-backdrop hidden" id="requestModal"><div class="modal"><button class="modal-x" data-close="requestModal">×</button><span class="eyebrow">Invitation request</span><h2>Request WorkReady access</h2><p>Tell us where to send your invitation.</p><form id="requestForm"><label>Name<input name="name" required /></label><label>Work email<input name="email" type="email" required /></label><label>Organization<input name="organization" required /></label><label>Phone<input name="phone" type="tel" /></label><button class="btn btn-primary btn-block" type="submit">Request invitation</button><div class="form-note" id="requestNote"></div></form></div></div>
+
+  <div class="modal-backdrop hidden" id="loginModal"><div class="modal"><button class="modal-x" data-close="loginModal">×</button><span class="eyebrow">Secure access</span><h2>Sign in to WorkReady</h2><form id="loginForm"><label>Email<input name="email" type="email" required /></label><label>Password<input name="password" type="password" required /></label><button class="btn btn-primary btn-block" type="submit">Sign in</button><div class="form-note" id="loginNote"></div></form></div></div>
+
+  <section class="portal hidden" id="portal"><aside class="portal-sidebar" id="portalSidebar"></aside><div class="portal-main"><div class="portal-top"><div><button class="mobile-menu" id="mobileMenu">☰</button><span class="portal-kicker" id="portalKicker">WORKREADY</span><h2 id="portalTitle">Dashboard</h2></div><div class="portal-user" id="portalUser"></div></div><div class="portal-workspace" id="portalWorkspace"></div></div></section>
+
+  <script src="./app.js"></script>
+</body>
+</html>

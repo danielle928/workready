@@ -928,10 +928,27 @@ async function jobPartnerOptions(){
 }
 async function loadJobContractors(partnerId,selectId='jobContractor'){
   const sel=$(selectId);if(!sel)return
+  const help=$('jobContractorHelp')
   sel.innerHTML='<option value="">Loading contractors…</option>'
-  const {data,error}=await sb.from('wr_partner_contractors').select('id,status,wr_contractor_businesses(legal_name,trade,email)').eq('partner_id',partnerId).not('status','eq','inactive').order('created_at',{ascending:false})
-  if(error){sel.innerHTML='<option value="">Unable to load contractors</option>';return}
-  sel.innerHTML='<option value="">Select contractor</option>'+((data||[]).map(x=>`<option value="${x.id}">${escapeHtml(x.wr_contractor_businesses?.legal_name||'Contractor')} ${x.wr_contractor_businesses?.trade?'— '+escapeHtml(x.wr_contractor_businesses.trade):''}</option>`).join(''))
+  if(help)help.textContent='Checking live contractor clearance for this location…'
+  const {data,error}=await sb.from('wr_partner_contractors')
+    .select('id,status,compliance_status,archived_at,wr_contractor_businesses(legal_name,trade,email)')
+    .eq('partner_id',partnerId).is('archived_at',null).order('created_at',{ascending:false})
+  if(error){
+    sel.innerHTML='<option value="">Unable to load contractors</option>'
+    if(help)help.textContent='Contractor clearance could not be loaded. Please refresh and try again.'
+    return
+  }
+  const available=(data||[]).filter(x=>x.status==='workready'&&x.compliance_status==='green')
+  const blocked=(data||[]).filter(x=>x.status!=='workready'||x.compliance_status!=='green')
+  const label=x=>escapeHtml(x.wr_contractor_businesses?.legal_name||'Contractor')+(x.wr_contractor_businesses?.trade?' — '+escapeHtml(x.wr_contractor_businesses.trade):'')
+  sel.innerHTML='<option value="">'+(available.length?'Select a cleared contractor':'No green-cleared contractors available')+'</option>'+
+    available.map(x=>`<option value="${x.id}">✓ ${label(x)} — Cleared to work</option>`).join('')+
+    (blocked.length?'<optgroup label="Unavailable — not cleared to work">'+blocked.map(x=>`<option disabled value="${x.id}">${label(x)} — ${escapeHtml((x.compliance_status||x.status||'not cleared').replaceAll('_',' '))}</option>`).join('')+'</optgroup>':'')
+  if(help)help.textContent=available.length+
+    ' cleared contractor'+(available.length===1?'':'s')+' eligible to receive work. '+
+    (blocked.length?blocked.length+' require attention or review. ':'')+
+    'Only green-cleared contractors can be assigned. Open Contractors to resolve outstanding requirements.'
 }
 async function renderJobs(){
   const partners=await jobPartnerOptions()
@@ -955,7 +972,7 @@ async function renderJobs(){
   </div>
   ${card('Create Job / Work Order',`<div class="form-grid">
     <div><label>Company / location</label><select id="jobPartner">${partnerOpts}</select></div>
-    <div><label>Contractor</label><select id="jobContractor"><option value="">Select company first</option></select></div>
+    <div><label for="jobContractor">Contractor — green clearance required</label><select id="jobContractor" aria-describedby="jobContractorHelp"><option value="">Select company first</option></select><small id="jobContractorHelp" class="job-clearance-help" role="status">Choose a location to see contractors eligible for dispatch.</small></div>
     <div><label>Job title</label><input id="jobTitle" placeholder="HVAC service call — Unit 304"></div>
     <div><label>Job type</label><select id="jobType"><option value="one_time">One-time</option><option value="recurring">Recurring</option></select></div>
     <div><label>Scheduled start</label><input id="jobStart" type="datetime-local"></div>
@@ -974,7 +991,7 @@ async function renderJobs(){
   document.querySelectorAll('.view-job').forEach(b=>b.onclick=()=>renderJobDetail(b.dataset.id))
   $('createJob').onclick=async()=>{
     const partner_id=$('jobPartner').value,partner_contractor_id=$('jobContractor').value,title=$('jobTitle').value.trim()
-    if(!partner_id||!partner_contractor_id||!title)return toast('Company/location, contractor, and job title are required')
+    if(!partner_id||!title)return toast('Company/location and job title are required'); if(!partner_contractor_id)return toast('Select a green-cleared contractor. Resolve red, yellow or pending requirements before dispatch.')
     const payload={
       partner_id,partner_contractor_id,title,
       description:$('jobDescription').value.trim()||null,

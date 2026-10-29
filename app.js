@@ -271,15 +271,15 @@ function sidebarButton(label,view){return `<button class="side-btn" data-view="$
 function renderSidebar(){
   renderAdminModeBanner()
   let items=sidebarButton('▦  Dashboard','home')
-  if(role()==='platform_admin')items+=sidebarButton('⚙  Admin Center','admin-center')+sidebarButton('◎  Organizations','partners')+sidebarButton('⌖  Locations','locations')+sidebarButton('♙  Contractors','contractors')+sidebarButton('▣  Jobs','jobs')+sidebarButton('☂  Coverage Requests','coverage')+sidebarButton('✉  Support Inbox','support-admin')
-  if(role()==='partner')items+=sidebarButton('♙  Contractors','partner-contractors')+sidebarButton('▣  Jobs','jobs')+sidebarButton('☑  Requirements','requirements')
+  if(role()==='platform_admin')items+=sidebarButton('⚙  Admin Center','admin-center')+sidebarButton('◎  Organizations','partners')+sidebarButton('⌖  Locations','locations')+sidebarButton('♙  Contractors','contractors')+sidebarButton('▣  Jobs','jobs')+sidebarButton('▤  Intake & Estimating','intake')+sidebarButton('☂  Coverage Requests','coverage')+sidebarButton('✉  Support Inbox','support-admin')
+  if(role()==='partner')items+=sidebarButton('♙  Contractors','partner-contractors')+sidebarButton('▣  Jobs','jobs')+sidebarButton('▤  Intake & Estimating','intake')+sidebarButton('☑  Requirements','requirements')
   if(role()==='contractor')items+=sidebarButton('✓  My WorkReady','contractor-home')+sidebarButton('▣  My Jobs','my-jobs')+sidebarButton('▤  Documents','documents')
   items+=sidebarButton('?  Help & Support','support')
   $('sidebar').innerHTML=items+`<div class="sidebar-brand"><img src="./workready-logo.png" alt="WorkReady"><small>GET CLEARED. GET COVERED. GET TO WORK.</small></div>`
   document.querySelectorAll('.side-btn').forEach(b=>b.onclick=()=>navigate(b.dataset.view,b))
   const first=document.querySelector('.side-btn[data-view="home"]'); if(first) first.classList.add('active')
 }
-async function navigate(view,btn){document.querySelectorAll('.side-btn').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');const routes={home:renderHome,'admin-center':renderAdminCenter,partners:renderPartners,locations:renderLocations,contractors:renderAllContractors,jobs:renderJobs,'my-jobs':renderMyJobs,coverage:renderCoverage,requirements:renderRequirements,'partner-contractors':renderPartnerContractors,'contractor-home':renderContractorHome,documents:renderDocuments,'support-admin':renderSupportAdmin,support:openSupport};await (routes[view]||renderHome)();applyClientPreviewGuards()}
+async function navigate(view,btn){document.querySelectorAll('.side-btn').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active');const routes={home:renderHome,'admin-center':renderAdminCenter,partners:renderPartners,locations:renderLocations,contractors:renderAllContractors,jobs:renderJobs,intake:renderIntake,'my-jobs':renderMyJobs,coverage:renderCoverage,requirements:renderRequirements,'partner-contractors':renderPartnerContractors,'contractor-home':renderContractorHome,documents:renderDocuments,'support-admin':renderSupportAdmin,support:openSupport};await (routes[view]||renderHome)();applyClientPreviewGuards()}
 
 function card(title,body){return `<section class="workspace-card"><h2>${title}</h2>${body}</section>`}
 function stat(label,n){return `<div class="stat"><small>${label}</small><b>${n}</b></div>`}
@@ -950,6 +950,59 @@ async function loadJobContractors(partnerId,selectId='jobContractor'){
     (blocked.length?blocked.length+' require attention or review. ':'')+
     'Only green-cleared contractors can be assigned. Open Contractors to resolve outstanding requirements.'
 }
+
+async function renderIntake(){
+ const result=await sb.from('cw_service_requests').select('*').order('created_at',{ascending:false}).limit(150)
+ if(result.error){$('workspace').innerHTML=card('Work request intake','<p>Unable to load this queue. You may not have City Wide review permissions.</p>');return}
+ const rows=result.data||[]
+ const statusLabel={submitted:'New intake',needs_info:'Needs information',estimating:'Estimating',approved:'Approved',declined:'Declined',dispatched:'Dispatched'}
+ $('workspace').innerHTML=`<div class="dash-topline"><div><h1>Intake & Estimating</h1><p>City Wide field opportunities submitted by Hunters and Farmers. Pricing is entered by authorized reviewers; no geographic pricing dataset is connected yet.</p></div></div>
+ <div class="dash-stats compact-stats">
+ ${dashboardStat('New Requests',rows.filter(r=>r.request_status==='submitted').length,'Ready for triage','orange','▤')}
+ ${dashboardStat('Estimating',rows.filter(r=>r.request_status==='estimating').length,'Cost and scope review','blue','▣')}
+ ${dashboardStat('Needs Info',rows.filter(r=>r.request_status==='needs_info').length,'Follow up with field','orange','!')}
+ ${dashboardStat('Approved',rows.filter(r=>r.request_status==='approved').length,'Ready for later dispatch','green','✓')}
+ </div>
+ ${card('Request queue',`<div class="table-wrap"><table><thead><tr><th>Customer & site</th><th>Service</th><th>Source</th><th>Urgency</th><th>Status</th><th></th></tr></thead><tbody>${rows.map(r=>`<tr><td><b>${escapeHtml(r.customer_name)}</b><br><small>${escapeHtml([r.city,r.state].filter(Boolean).join(', '))}</small></td><td>${escapeHtml(r.service_category.replaceAll('_',' '))}</td><td>${escapeHtml(r.sales_motion)}</td><td>${escapeHtml(r.urgency)}</td><td>${escapeHtml(statusLabel[r.request_status]||r.request_status)}</td><td><button class="btn light intake-open" data-id="${r.id}">Review</button></td></tr>`).join('')||'<tr><td colspan="6">No field opportunities received yet. Create one from the City Wide OS Opportunities page.</td></tr>'}</tbody></table></div>`)}
+ <div id="intakeDetail"></div>`
+ document.querySelectorAll('.intake-open').forEach(b=>b.onclick=()=>showIntakeDetail(rows.find(r=>r.id===b.dataset.id)))
+}
+function showIntakeDetail(r){
+ if(!r)return
+ const el=$('intakeDetail')
+ el.innerHTML=card('Internal work request review',`
+  <div class="job-meta-grid">
+   <div><small>Customer</small><b>${escapeHtml(r.customer_name)}</b></div>
+   <div><small>Sales motion</small><b>${escapeHtml(r.sales_motion)}</b></div>
+   <div><small>Location</small><b>${escapeHtml([r.service_address,r.city,r.state,r.postal_code].filter(Boolean).join(', '))}</b></div>
+   <div><small>Service</small><b>${escapeHtml(r.service_category.replaceAll('_',' '))}</b></div>
+   <div><small>Approx. square feet</small><b>${r.estimated_sqft==null?'Not entered':Number(r.estimated_sqft).toLocaleString()}</b></div>
+   <div><small>Urgency</small><b>${escapeHtml(r.urgency)}</b></div>
+  </div><h3>Scope submitted from City Wide</h3><p style="white-space:pre-wrap">${escapeHtml(r.scope_notes)}</p>
+  <p class="muted">Geographic pricing intelligence requires City Wide-approved regional benchmarks and comparable completed work orders. No automatic quote is provided at this stage.</p>
+  <div class="form-grid">
+   <div><label for="intakeCost">Estimated contractor cost ($)</label><input type="number" step="0.01" min="0" id="intakeCost" value="${r.proposed_cost??''}" placeholder="Enter verified cost"/></div>
+   <div><label for="intakeSell">Proposed customer price ($)</label><input type="number" step="0.01" min="0" id="intakeSell" value="${r.proposed_sell??''}" placeholder="Enter selling price"/></div>
+   <div class="full-span"><label for="intakeSource">Pricing reference / assumptions</label><input id="intakeSource" maxlength="400" value="${escapeHtml(r.quote_source||'')}" placeholder="Approved regional rate card, actual bid or comparable job"/></div>
+   <div class="full-span"><label for="intakeNotes">Internal review notes</label><textarea id="intakeNotes" rows="3" placeholder="Missing information, site conditions, or approval reasoning">${escapeHtml(r.internal_notes||'')}</textarea></div>
+  </div>
+  <div class="actions">
+   <button class="btn secondary intake-action" data-status="needs_info">Request Information</button>
+   <button class="btn secondary intake-action" data-status="estimating">Save Estimate</button>
+   <button class="btn primary intake-action" data-status="approved">Approve Pricing</button>
+   <button class="btn light intake-action" data-status="declined">Decline Request</button>
+  </div><p id="intakeReviewNotice" role="status" aria-live="polite"></p>`)
+ el.scrollIntoView({behavior:'smooth',block:'start'})
+ el.querySelectorAll('.intake-action').forEach(b=>b.onclick=async()=>{
+  const cost=$('intakeCost').value,sell=$('intakeSell').value,notes=$('intakeNotes').value,source=$('intakeSource').value
+  if(b.dataset.status==='approved'&&(!cost||!sell||!source.trim())){ $('intakeReviewNotice').textContent='Enter a contractor cost, customer price and pricing reference before approving.';return}
+  b.disabled=true
+  const {error}=await sb.rpc('cw_review_service_request',{p_id:r.id,p_decision:b.dataset.status,p_notes:notes,p_cost:cost===''?null:Number(cost),p_sell:sell===''?null:Number(sell),p_quote_source:source})
+  if(error){b.disabled=false;$('intakeReviewNotice').textContent=error.message;return}
+  toast('Work request updated');await renderIntake()
+ })
+}
+
 async function renderJobs(){
   const partners=await jobPartnerOptions()
   const allowedIds=partners.map(p=>p.id)

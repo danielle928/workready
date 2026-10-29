@@ -4,7 +4,7 @@ const sb = createClient('https://wxyuqqxhlbfzbtpomcco.supabase.co','sb_publishab
 const $ = id => document.getElementById(id)
 const state = { user:null, profile:null, partnerMemberships:[], contractorMemberships:[], partners:[], activePartner:null, activeContractor:null, activeJob:null, pendingW9Token:new URL(location.href).searchParams.get('w9_request'), clientPreviewPartner:null, supportActionPartner:null, supportActionSessionId:null, supportThread:null }
 
-function toast(text){$('toast').innerHTML=`<div class="toast">${text}</div>`;setTimeout(()=>{$('toast').innerHTML=''},2800)}
+function toast(text){const node=document.createElement('div');node.className='toast';node.textContent=String(text??'');$('toast').replaceChildren(node);setTimeout(()=>{if(node.parentNode)node.remove()},2800)}
 function authMessage(text,type=''){ $('authMessage').innerHTML=`<div class="message ${type}">${text}</div>` }
 function showMarketing(){ $('marketing').classList.remove('hidden');$('publicNav').classList.remove('hidden');$('authView').classList.add('hidden');$('appView').classList.add('hidden') }
 function showAuth(){ $('marketing').classList.add('hidden');$('publicNav').classList.add('hidden');$('authView').classList.remove('hidden');$('appView').classList.add('hidden');window.scrollTo(0,0) }
@@ -1091,11 +1091,11 @@ async function renderJobDetail(jobId){
 
 async function renderAllContractors(){
   const {data}=await sb.from('wr_partner_contractors').select('status,coverage_choice,workready_score,wr_partners(name),wr_contractor_businesses(legal_name,email,trade)').order('created_at',{ascending:false})
-  $('workspace').innerHTML=`<h1>All Contractors</h1>${card('Network',`<div class="table-wrap"><table><thead><tr><th>Contractor</th><th>Partner</th><th>Status</th><th>Coverage</th></tr></thead><tbody>${(data||[]).map(x=>`<tr><td>${x.wr_contractor_businesses?.legal_name||''}<br><small>${x.wr_contractor_businesses?.email||''}</small></td><td>${x.wr_partners?.name||''}</td><td>${x.status}</td><td>${x.coverage_choice||'—'}</td></tr>`).join('')}</tbody></table></div>`)}`}
+  $('workspace').innerHTML=`<h1>All Contractors</h1>${card('Network',`<div class="table-wrap"><table><thead><tr><th>Contractor</th><th>Partner</th><th>Status</th><th>Coverage</th></tr></thead><tbody>${(data||[]).map(x=>`<tr><td>${escapeHtml(x.wr_contractor_businesses?.legal_name||'')}<br><small>${escapeHtml(x.wr_contractor_businesses?.email||'')}</small></td><td>${escapeHtml(x.wr_partners?.name||'')}</td><td>${escapeHtml(x.status||'')}</td><td>${escapeHtml(x.coverage_choice||'—')}</td></tr>`).join('')}</tbody></table></div>`)}`}
 
 async function renderCoverage(){
   const {data}=await sb.from('wr_coverage_requests').select('*,wr_partner_contractors(wr_partners(name),wr_contractor_businesses(legal_name,email))').order('created_at',{ascending:false})
-  $('workspace').innerHTML=`<h1>Coverage Requests</h1>${card('Insurance Opportunity Queue',`<div class="table-wrap"><table><thead><tr><th>Contractor</th><th>Partner</th><th>Status</th><th>Created</th></tr></thead><tbody>${(data||[]).map(x=>`<tr><td>${x.wr_partner_contractors?.wr_contractor_businesses?.legal_name||''}</td><td>${x.wr_partner_contractors?.wr_partners?.name||''}</td><td>${x.status}</td><td>${new Date(x.created_at).toLocaleDateString()}</td></tr>`).join('')}</tbody></table></div>`)}`}
+  $('workspace').innerHTML=`<h1>Coverage Requests</h1>${card('Insurance Opportunity Queue',`<div class="table-wrap"><table><thead><tr><th>Contractor</th><th>Partner</th><th>Status</th><th>Created</th></tr></thead><tbody>${(data||[]).map(x=>`<tr><td>${escapeHtml(x.wr_partner_contractors?.wr_contractor_businesses?.legal_name||'')}</td><td>${escapeHtml(x.wr_partner_contractors?.wr_partners?.name||'')}</td><td>${escapeHtml(x.status||'')}</td><td>${new Date(x.created_at).toLocaleDateString()}</td></tr>`).join('')}</tbody></table></div>`)}`}
 
 async function getActiveAgreementForPartner(partner){
   let {data}=await sb.from('wr_agreement_templates').select('*').eq('partner_id',partner.id).eq('is_active',true).order('version',{ascending:false}).limit(1)

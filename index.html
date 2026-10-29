@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-  <div id="toast"></div>
+  <div id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
 
   <header id="publicNav" class="nav">
     <div class="container nav-inner">
@@ -71,7 +71,7 @@
     <section id="partners" class="marketing-section">
       <div class="container split">
         <div><span class="eyebrow blue">FOR PARTNERS</span><h2>Stop chasing contractor paperwork.</h2><p>Create the rules once. Invite contractors against the right requirements. Know who is ready, who needs action, and who needs help getting coverage.</p><button class="btn secondary" data-action="open-login">Partner Login</button></div>
-        <div class="metric-card"><div><span>Contractors</span><b>312</b></div><div class="metric-grid"><span><b>245</b> WorkReady</span><span><b>29</b> Action Required</span><span><b>18</b> Awaiting Docs</span><span><b>9</b> Expiring Soon</span></div></div>
+        <div class="metric-card" aria-label="Illustrative dashboard metrics"><div><span>Contractors</span><b>312</b></div><div class="metric-grid"><span><b>245</b> WorkReady</span><span><b>29</b> Action Required</span><span><b>18</b> Awaiting Docs</span><span><b>9</b> Expiring Soon</span></div><small class="metric-disclaimer">Illustrative preview · Not live customer data</small></div>
       </div>
     </section>
 
@@ -90,18 +90,18 @@
         <h2 id="authTitle">Welcome to WorkReady</h2>
         <p id="authSubtitle">Sign in to access your dashboard.</p>
         <div id="normalAuth">
-          <label>Email</label><input id="authEmail" type="email" autocomplete="email" placeholder="you@company.com">
-          <label>Password</label><input id="authPassword" type="password" autocomplete="current-password" placeholder="Password">
-          <label id="nameLabel" class="signup-only hidden">Full name</label><input id="authName" class="signup-only hidden" placeholder="Full name">
+          <label for="authEmail">Email</label><input id="authEmail" type="email" autocomplete="email" placeholder="you@company.com">
+          <label for="authPassword">Password</label><input id="authPassword" type="password" autocomplete="current-password" placeholder="Password">
+          <label for="authName" id="nameLabel" class="signup-only hidden">Full name</label><input id="authName" class="signup-only hidden" placeholder="Full name">
           <div class="auth-actions"><button id="signInBtn" class="btn primary">Sign In</button><button id="signUpBtn" class="btn secondary">Create Account</button></div>
           <button id="forgotBtn" class="link-btn">Forgot password?</button>
         </div>
         <div id="recoveryAuth" class="hidden">
-          <label>New password</label><input id="newPassword" type="password" autocomplete="new-password">
-          <label>Confirm new password</label><input id="confirmPassword" type="password" autocomplete="new-password">
+          <label for="newPassword">New password</label><input id="newPassword" type="password" autocomplete="new-password">
+          <label for="confirmPassword">Confirm new password</label><input id="confirmPassword" type="password" autocomplete="new-password">
           <button id="savePasswordBtn" class="btn primary">Save New Password</button>
         </div>
-        <div id="authMessage"></div>
+        <div id="authMessage" role="status" aria-live="polite"></div>
       </div>
     </div>
   </section>
@@ -117,9 +117,9 @@
   </section>
 
   <div id="supportDrawer" class="drawer hidden">
-    <div class="drawer-head"><div><b>WorkReady Support</b><small>We're here to help.</small></div><button id="closeSupport" class="icon-btn">×</button></div>
+    <div class="drawer-head"><div><b>WorkReady Support</b><small>We're here to help.</small></div><button id="closeSupport" class="icon-btn" aria-label="Close WorkReady support">×</button></div>
     <div id="supportThread" class="chat-body"></div>
-    <div class="chat-compose"><textarea id="supportMessage" placeholder="Type your message…"></textarea><button id="sendSupport" class="btn primary">Send</button></div>
+    <div class="chat-compose"><textarea id="supportMessage" aria-label="Message WorkReady support" placeholder="Type your message…"></textarea><button id="sendSupport" class="btn primary">Send</button></div>
   </div>
 
   <script type="module" src="./app.js"></script>

@@ -368,7 +368,7 @@ async function renderExecutiveDashboard(){
     <div class="dash-grid-two">
       <section class="dash-panel">
         <div class="dash-panel-head"><h2>Compliance Overview</h2><button class="dash-link" data-view="contractors">View contractors →</button></div>
-        <div class="compliance-layout">
+        ${total===0?`<div class="empty-state" style="min-height:210px;display:flex;flex-direction:column;justify-content:center;gap:12px;text-align:center;padding:24px"><span style="font-size:34px" aria-hidden="true">👷</span><b>No contractors added yet</b><span>Invite your first contractor to start onboarding and track readiness.</span><button class="btn primary dash-start-contractors" type="button" style="align-self:center">View Contractors →</button></div>`:`<div class="compliance-layout">
           <div class="donut" style="--ready:${readyPct};--pending:${pendingPct};--overdue:${overduePct}">
             <div><b>${total}</b><span>Total</span></div>
           </div>
@@ -377,7 +377,7 @@ async function renderExecutiveDashboard(){
             <p><i class="legend-dot orange"></i><span>Pending</span><b>${pending} (${pendingPct}%)</b></p>
             <p><i class="legend-dot red"></i><span>Action Required</span><b>${overdue} (${overduePct}%)</b></p>
           </div>
-        </div>
+        </div>`}
       </section>
 
       <section class="dash-panel">
@@ -388,6 +388,13 @@ async function renderExecutiveDashboard(){
         </div>
       </section>
     </div>
+
+    <section class="dash-panel" aria-label="Operational priorities">
+      <div class="dash-panel-head"><h2>Operational Priorities</h2><span class="pill ${overdue||expiring.length?'warn':'ok'}">${overdue+expiring.length} items to review</span></div>
+      <div style="padding:12px 4px 20px">
+        ${overdue||expiring.length?`<p><b>${overdue} contractor(s) require action</b> and <b>${expiring.length} document(s) expire within 30 days.</b></p><button type="button" class="btn secondary dash-review-contractors">Review Contractors →</button>`:`<div class="empty-state horizontal"><b>No urgent contractor issues</b><span>${total===0?'Start by inviting contractors. Readiness alerts will appear here once they begin onboarding.':'All currently tracked contractors have no flagged action-required status or upcoming document expirations.'}</span></div>`}
+      </div>
+    </section>
 
     <section class="dash-panel dash-operations-panel">
       <div class="dash-panel-head"><h2>Work Operations</h2><button class="dash-link" data-view="jobs">Open Jobs →</button></div>
@@ -400,6 +407,7 @@ async function renderExecutiveDashboard(){
     </section>
   `
   document.querySelectorAll('.dash-link[data-view]').forEach(b=>b.onclick=()=>navigate(b.dataset.view))
+  document.querySelectorAll('.dash-start-contractors,.dash-review-contractors').forEach(b=>b.onclick=()=>navigate('contractors'))
 }
 async function renderHome(){
   const r=role()
